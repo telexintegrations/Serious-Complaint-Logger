@@ -11,8 +11,8 @@ exports.integrationSpecSettings = {
             "app_description": "An output integration app that sends an email to a specified email address whenever a serious complaint is detected in a message.",
             "app_logo": "https://iili.io/3962CI1.jpg",
             "app_name": "Serious Complaint Logger",
-            "app_url": "url",
-            "background_color": "#FFFFFF",
+            "app_url": "https://serious-complaint-logger.onrender.com",
+            "background_color": "#FFFFFF"
         },
 
         "integration_category": "Email & Messaging",
@@ -29,21 +29,20 @@ exports.integrationSpecSettings = {
         "permissions": {
             "events": [
                 "Receives messages from a Telex channel",
-                 "Detects serious complaints in messages using OpenAI's GPT-4 model",
-                 "Sends an email, containing the complaint, to a specified email address"
-             ]
+                "Detects serious complaints in messages using OpenAI's GPT-4 model",
+                "Sends an email, containing the complaint, to a specified email address"
+                ]
         },
-        "settings": {
-            "email_address": {
-                "type": "Text",
+        "settings": [
+            {
                 "label": "Email Address",
+                "type": "Text",
                 "description": "The email address to receive serious complaint alerts",
                 "default": "",
-                "placeholder": "Enter the email address to receive serious complaint alerts",
                 "required": true
             }
-        },
-        "target_url": "https://yourdomain.com/webhook/complaint"
+        ],
+        "target_url": "https://serious-complaint-logger.onrender.com/webhook/complaint"
     }
 }
 

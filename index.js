@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 const { OpenAI } = require("openai");
-const { integrationSpecSettings } = require("./integrationSpec.js");
+const { integrationSpecSettings } = require("./integration-spec.js");
 
 dotenv.config();
 
