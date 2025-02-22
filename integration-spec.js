@@ -17,7 +17,7 @@ exports.integrationSpecSettings = {
 
         "integration_category": "Email & Messaging",
 
-        "integration_type": "Output",
+        "integration_type": "modifier",
 
         "is_active": true,
 
