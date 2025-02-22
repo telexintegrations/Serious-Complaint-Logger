@@ -36,11 +36,17 @@ exports.integrationSpecSettings = {
         "settings": [
             {
                 "label": "Email Address",
-                "type": "Text",
+                "type": "text",
                 "description": "The email address to receive serious complaint alerts",
-                "default": "",
-                "placeholder": "Input the email address to receive emails",
+                "default": "username@example.com",
                 "required": true
+            },
+            {
+                "label": "Alert Admin",
+                "type": "multi-select",
+                "description": "Select the user roles to alert",
+                "required": true,
+                "default": "Super-Admin, Admin"
             }
         ],
         "target_url": "https://serious-complaint-logger.onrender.com/webhook/complaint"
