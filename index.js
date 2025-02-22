@@ -62,9 +62,10 @@ async function isSeriousComplaint(message) {
 
 app.post("/webhook/complaint", async (req, res) => {
     try {
-        const { message, user } = req.body;
+        console.log("Incoming Telex webhook:", req.query);
+        const { username, message } = req.query;
 
-        if (!message || !user) {
+        if (!message || !message.trim() || !username || !username.trim()) {
             return res.status(400).json({
                 success: false,
                 error: "Invalid request: you skipped some required fields"

@@ -39,6 +39,7 @@ exports.integrationSpecSettings = {
                 "type": "Text",
                 "description": "The email address to receive serious complaint alerts",
                 "default": "",
+                "placeholder": "Input the email address to receive emails",
                 "required": true
             }
         ],
