@@ -4,13 +4,71 @@ A Node.js-based integration that listens for serious complaints and sends email 
 🔗 **Live URL:** [Serious Complaint Logger](https://serious-complaint-logger.onrender.com)
 
 ---
-## Features
-✅ API endpoint to log serious complaints
-✅ Sends email notifications upon complaint submission
-✅ Built with Node.js and Express
-✅ Deployed on Render
+## **Features**
+- ✅ API endpoint to log serious complaints
+- ✅ Sends email notifications upon complaint submission
+- ✅ Built with Node.js and Express
+- ✅ Deployed on Render
 
 ---
+
+## **Integration JSON**
+```json
+{
+    "data": {
+        "author": "Georgia Uzoamaka Nwachukwu",
+
+        "date": {
+            "created_at": "2025-02-21",
+            "updated_at": "2025-02-21"
+        },
+
+        "descriptions": {
+            "app_description": "An output integration app that sends an email to a specified email address whenever a serious complaint is detected in a message.",
+            "app_logo": "https://iili.io/3962CI1.jpg",
+            "app_name": "Serious Complaint Logger",
+            "app_url": "https://serious-complaint-logger.onrender.com",
+            "background_color": "#FFFFFF"
+        },
+
+        "integration_category": "Email & Messaging",
+
+        "integration_type": "modifier",
+
+        "is_active": true,
+
+        "key_features": [
+            "Receives messages from a Telex channel",
+            "Detects serious complaints in messages using OpenAI's GPT-4 model",
+            "Sends an email, containing the complaint, to a specified email address"
+        ],
+        "permissions": {
+            "events": [
+                "Receives messages from a Telex channel",
+                "Detects serious complaints in messages using OpenAI's GPT-4 model",
+                "Sends an email, containing the complaint, to a specified email address"
+                ]
+        },
+        "settings": [
+            {
+                "label": "Email Address",
+                "type": "text",
+                "description": "The email address to receive serious complaint alerts",
+                "default": "username@example.com",
+                "required": true
+            },
+            {
+                "label": "Alert Admin",
+                "type": "multi-select",
+                "description": "Select the user roles to alert",
+                "required": true,
+                "default": "Super-Admin, Admin"
+            }
+        ],
+        "target_url": "https://serious-complaint-logger.onrender.com/webhook/complaint"
+    }
+}
+```
 
 ## **Getting Started**
 
@@ -76,6 +134,11 @@ To deploy on Render:
 2. Connect the repo to Render and select Node.js as the environment.
 3. Set up environment variables in Render’s Environment Settings.
 4. Deploy and get your live URL.
+
+### **Testing**
+1. Add integration [JSON link]("https://serious-complaint-logger.onrender.com/integration-spec) to telex
+2. Add email address to Settings, as a forwarding address.
+3. Send messages to Telex channel for OpenAI to read and detect serious complaints
 
 ## **Technologies Used**
 * Node.js – Backend runtime
