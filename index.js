@@ -3,11 +3,14 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
+const axios = require("axios");
 const { OpenAI } = require("openai");
 const { integrationSpecSettings } = require("./integration-spec.js");
 
 dotenv.config();
 
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 const app = express();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const PORT = process.env.PORT || 3000;
@@ -32,6 +35,21 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASSWORD
     },
 });
+
+async function sendTelegramAlert(username, message) {
+
+    try {
+        const text = `Serious Complaint Alert! \n\nUser: ${username}\nComplaint: "${message}"`;
+        const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        await axios.post(url, {
+            chat_id: TELEGRAM_CHAT_ID,
+            text: text,
+        });
+        console.log("Telegram alert sent!")
+    } catch (error) {
+        console.error("Error sending Telegram Alert:", error);
+    }
+}
 
 async function isSeriousComplaint(message) {
     try {
@@ -62,10 +80,10 @@ async function isSeriousComplaint(message) {
 
 app.post("/webhook/complaint", async (req, res) => {
     try {
-        console.log("Incoming Telex webhook:", req.query);
-        const { username, message } = req.query;
+        const { username, message } = req.body;
+        console.log("Incoming Telex webhook:", req.body);
 
-        if (!message || !message.trim() || !username || !username.trim()) {
+        if (!message || !username) {
             return res.status(400).json({
                 success: false,
                 error: "Invalid request: you skipped some required fields"
@@ -75,14 +93,22 @@ app.post("/webhook/complaint", async (req, res) => {
         const isSerious = await isSeriousComplaint(message);
 
         if (isSerious) {
+
             const mailOptions = {
                 from: process.env.EMAIL_USER,
                 to: process.env.TEST_EMAIL,
                 subject: "Serious complaint Alert!",
-                text: `A serious complaint has been logged by ${user}, here are more details: \n\n"${message}"`,
+                text: `A serious complaint has been logged by ${username}, here are more details: \n\n"${message}"`,
             };
 
             try{
+                await sendTelegramAlert(username, message);
+                console.log("Telegram message successfully sent")
+            } catch (telegramError) {
+                console.error("Error sending Telegram alert:", telegramError);
+            }
+
+            try {
                 await transporter.sendMail(mailOptions);
                 console.log(`Email sent for serious complaint: ${message}`);
             } catch (emailError) {
@@ -108,6 +134,7 @@ app.post("/webhook/complaint", async (req, res) => {
             error: "Internal server error"});   
     }
 });
+
 
 app.listen(PORT, () => {
     console.log(`we are live on http://localhost:${PORT}`)

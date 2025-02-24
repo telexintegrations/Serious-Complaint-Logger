@@ -10,7 +10,7 @@ exports.integrationSpecSettings = {
         "descriptions": {
             "app_description": "An output integration app that sends an email to a specified email address whenever a serious complaint is detected in a message.",
             "app_logo": "https://iili.io/3962CI1.jpg",
-            "app_name": "Serious Complaint Logger",
+            "app_name": "Serious Complaint Analyzer",
             "app_url": "https://serious-complaint-logger.onrender.com",
             "background_color": "#FFFFFF"
         },
