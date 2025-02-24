@@ -7,6 +7,7 @@ const axios = require("axios");
 const { OpenAI } = require("openai");
 const { integrationSpecSettings } = require("./integration-spec.js");
 
+
 dotenv.config();
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
@@ -51,6 +52,20 @@ async function sendTelegramAlert(username, message) {
     }
 }
 
+async function sendtelexWebhook(username, message) {
+    try {
+        const response = await axios.post("https://ping.telex.im/v1/webhooks/01953802-2c18-7278-b0d5-e1a30830a312", {
+            event_name: "Complaint received",
+            message: `@${username}, your complaint has been received, please be patient while a memeber of our team gets back to you.`,
+            status: "success",
+            username: username
+        });
+        console.log("message sent to Telex channel!");
+    } catch (error) {
+        console.error("Error sending message:", error);
+    }
+}
+
 async function isSeriousComplaint(message) {
     try {
         const response = await openai.chat.completions.create({
@@ -80,8 +95,8 @@ async function isSeriousComplaint(message) {
 
 app.post("/webhook/complaint", async (req, res) => {
     try {
-        const { username, message } = req.body;
-        console.log("Incoming Telex webhook:", req.body);
+        const { username, message } = req.query;
+        console.log("Incoming Telex webhook:", req.query);
 
         if (!message || !username) {
             return res.status(400).json({
@@ -118,6 +133,9 @@ app.post("/webhook/complaint", async (req, res) => {
                     error: "Failed to send email"
                 });
             }
+
+            await sendtelexWebhook(username, message);
+            console.log("Telex message received!")
         } else {
             console.log("Not a serious complaint, sorry:", message);
         }
